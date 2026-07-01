@@ -1,10 +1,20 @@
 import User from "../models/user.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
+import { isAdmin } from "./productController.js";
 
 export function createUser(req, res) {
-    
+
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+
+    if (req.body.role == 'admin') {
+        if (!isAdmin(req)) {
+            res.status(403).json({
+                message: "To create a admin account you need to be an admin"
+            })
+            return;
+        }
+    }
 
     const user = new User({
         email: req.body.email,
@@ -37,8 +47,8 @@ export function loginUser(req, res) {
         console.log("=====",rounds);
         */
 
-        console.log("password:",password);
-        console.log("password::",user.password);
+        console.log("password:", password);
+        console.log("password::", user.password);
 
         if (user === null) {
             res.status(404).json({
@@ -54,7 +64,7 @@ export function loginUser(req, res) {
                     lastName: user.lastName,
                     role: user.role,
                     image: user.image
-                },"jwt-secretKey")
+                }, "jwt-secretKey")
 
                 res.status(200).json({
                     message: "Login succeful",

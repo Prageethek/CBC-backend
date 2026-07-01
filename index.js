@@ -5,6 +5,7 @@ import studentRouter from "./routes/studentRouter.js";
 import productRouter from "./routes/productRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import jwt from "jsonwebtoken";
+import orderRouter from "./routes/orderRoutes.js";
 
 const app = express();
 
@@ -44,6 +45,8 @@ mongoose.connect("mongodb+srv://admin:123@cluster0.fp9wfgh.mongodb.net/?appName=
 // app.use("/students", studentRouter);
 app.use("/products", productRouter);
 app.use("/users", userRouter);
+app.use("/orders", orderRouter);
+
 
 app.listen(3000, () =>
 	console.log("server is running on port 3000"));

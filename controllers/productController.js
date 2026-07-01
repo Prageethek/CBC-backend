@@ -32,7 +32,7 @@ export function saveProduct(req, res) {
     const product = new Product(
         {
             productId: req.body.productId,
-            productName: req.body.name,
+            name: req.body.name,
             altName: req.body.altName,
             description: req.body.description,
             images: req.body.images,
@@ -63,6 +63,7 @@ export async function deleteProduct(req, res) {
 
     if (isAdmin(req)) {
 
+        // This code block is for getting the product id in request body
         // const product = await Product.findOne({ productId: req.body.productId })
 
         // if (product) {
@@ -95,6 +96,43 @@ export async function deleteProduct(req, res) {
         })
     }
 }
+
+export async function updateProduct(req, res) {
+
+    if (!isAdmin(req)) {
+        res.status(403).json({
+            message: "Only admins can update the product"
+        })
+        return;
+    }
+    const result = await Product.findOneAndUpdate({ productId: req.params.productId },
+        req.body,
+        { new: true })
+    res.json({ result: result })
+}
+
+export async function getProduct(req, res) {
+    const product = await Product.findOne({ productId: req.params.productId })
+    if (product) {
+        if(product.isAvailable){
+            res.json(product)
+            return
+        }else {
+            if(!isAdmin(req)){
+                res.status(404).json({
+                    message:"No product found"
+                })
+            }else {
+                res.status(200).json(product)
+            }
+        }
+    } else {
+        res.status(404).json({
+            message: "No product to show for relevent product id"
+        })
+    }
+}
+
 
 export function isAdmin(req) {
     if (req.user == null) {
