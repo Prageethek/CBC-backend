@@ -48,7 +48,7 @@ export function loginUser(req, res) {
         */
 
         console.log("password:", password);
-        console.log("password::", user.password);
+        // console.log("password::", user.password);
 
         if (user === null) {
             res.status(404).json({
@@ -71,7 +71,7 @@ export function loginUser(req, res) {
                     token: token
                 })
             } else {
-                res.satus(404).json({
+                res.status(404).json({
                     message: "Invalid password"
                 })
             }
