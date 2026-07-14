@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 
 	const token = req.header("Authorization")?.slice(7);
 	if (token) {
-		jwt.verify(token, "jwt-secretKey",
+		jwt.verify(token, process.env.JWT_KEY,
 			(error, decoded) => {
 				if (decoded) {
 					req.user = decoded
@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 			}
 		)
 
-	}else {
+	} else {
 		next(); //login wage feauture walata token ekak na
 	}
 

@@ -2,6 +2,7 @@ import User from "../models/user.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import { isAdmin } from "./productController.js";
+import dotenv from 'dotenv'
 
 export function createUser(req, res) {
 
@@ -64,7 +65,7 @@ export function loginUser(req, res) {
                     lastName: user.lastName,
                     role: user.role,
                     image: user.image
-                }, "jwt-secretKey")
+                }, process.env.JWT_KEY)
 
                 res.status(200).json({
                     message: "Login succeful",
