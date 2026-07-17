@@ -50,11 +50,11 @@ export function saveProduct(req, res) {
         res.json({
             message: "product have saved",
         });
-    }).catch(() => {
-        res.json({
-            message: "Failed to add product",
+    }).catch((e) => {
+        res.status(500).json({
+            message: e.message,
         });
-    });
+    })
 
 };
 
